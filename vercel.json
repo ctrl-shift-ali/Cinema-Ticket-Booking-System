@@ -1,9 +1,9 @@
 {
- "version": 2;
+ "version": 2,
  "builds": [
   {
    "src": "CinemaManagementSystem.py",
-   "use": "@vercel/python",
+   "use": "@vercel/python"
   }
  ],
  "routes": [
