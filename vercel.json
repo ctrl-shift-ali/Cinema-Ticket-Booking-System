@@ -7,10 +7,10 @@
   }
  ],
  "routes": [
-   {
-    "src": "/(.*)",
-    "dest": "CinemaManagementSystem.py"
-   }
+  {
+   "src": "/(.*)",
+   "dest": "CinemaManagementSystem.py"
+  }
  ]
 }
 
