@@ -2,6 +2,8 @@
 entrypoint = "CinemaManagementSystem:app"
 
 [project]
+name = "cinema-management-system"
+version = "0.1.0"
 dependencies = [
     "gunicorn",
 ]
