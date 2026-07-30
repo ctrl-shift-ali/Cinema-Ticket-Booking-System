@@ -1,0 +1,13 @@
+.git
+.gitignore
+__pycache__
+*.pyc
+.venv
+.env
+.DS_Store
+tickets/
+*.xlsx
+README.md
+PUSH.md
+TicketSample.png
+pyproject.toml

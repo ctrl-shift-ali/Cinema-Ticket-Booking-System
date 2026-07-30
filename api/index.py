@@ -1,12 +1,15 @@
-import sys
 import os
+import sys
 from pathlib import Path
 
-# Add the parent directory to the path so we can import CinemaManagementSystem
-parent_dir = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(parent_dir))
+# Set Vercel environment
+os.environ['VERCEL'] = '1'
 
-# Import the Flask app
+# Add parent directory to path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+# Import and export the Flask app
 from CinemaManagementSystem import app
 
-# Export the app for Vercel
+# Vercel needs the app exported at module level for WSGI
+# The @vercel/python runtime will use this as the WSGI application
