@@ -13,22 +13,16 @@ from reportlab.pdfbase.pdfmetrics import stringWidth
 app = Flask(__name__, template_folder='templates', static_folder='static')
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
-
-# Environment-aware file paths for serverless deployment
 import os
 is_vercel = os.environ.get('VERCEL') == '1'
 
 baseDir = Path(__file__).resolve().parent
 if is_vercel:
-    # Use /tmp for Vercel serverless (writable directory)
     dataDir = Path('/tmp/data')
     ticketDir = Path('/tmp/tickets')
 else:
-    # Use local directories for development
     dataDir = baseDir / "data"
     ticketDir = baseDir / "tickets"
-
-# Create directories if they don't exist
 try:
     dataDir.mkdir(exist_ok=True, parents=True)
     ticketDir.mkdir(exist_ok=True, parents=True)
@@ -37,7 +31,7 @@ except Exception as e:
 
 excelPath = dataDir / "bookings.xlsx"
 
-#For Adding Seats
+#Adjust Seats layout from here!.
 roomCapacity = 70
 seatsPerRow = 10
 rowLetters = ["A", "B", "C", "D", "E", "F", "G"]
@@ -367,13 +361,10 @@ def drawBarcode(c, x, y, width, height, seed):
 def drawTicketCard(c, originX, originY, width, height, booking, seatLabel, seatIndex):
     stubWidth = width * 0.34
     mainWidth = width - stubWidth
-
-    # Card backgrounds
     c.setFillColor(CARD_BG)
     c.roundRect(originX, originY, mainWidth, height, 5, fill=1, stroke=0)
     c.setFillColor(CARD_BG_LIGHT)
     c.roundRect(originX + mainWidth, originY, stubWidth, height, 5, fill=1, stroke=0)
-    # square off the shared edge so it reads as one card
     c.setFillColor(CARD_BG)
     c.rect(originX + mainWidth - 8, originY, 8, height, fill=1, stroke=0)
     c.setFillColor(CARD_BG_LIGHT)
@@ -385,7 +376,6 @@ def drawTicketCard(c, originX, originY, width, height, booking, seatLabel, seatI
     textX = originX + 6 * mm
     rightEdge = originX + mainWidth - 6 * mm
 
-    # ---- Header bar ----
     headerH = 6 * mm
     c.setFillColor(colors.HexColor("#2d2140"))
     c.rect(originX, top - headerH, mainWidth, headerH, fill=1, stroke=0)
@@ -394,7 +384,6 @@ def drawTicketCard(c, originX, originY, width, height, booking, seatLabel, seatI
     c.drawString(textX, top - headerH + 1.8 * mm, "TICKET")
     c.drawRightString(rightEdge, top - headerH + 1.8 * mm, "\u2605 CINEMA TICKET \u2605")
 
-    # ---- Movie title (truncated with ellipsis if too wide) ----
     titleFontSize = 10
     maxTitleWidth = rightEdge - textX
     title = booking["movieTitle"]
@@ -405,8 +394,6 @@ def drawTicketCard(c, originX, originY, width, height, booking, seatLabel, seatI
     c.setFillColor(WHITE)
     c.setFont("Helvetica-Bold", titleFontSize)
     c.drawString(textX, top - 11.5 * mm, title)
-
-    # ---- Field row (single row, six compact columns) ----
     labelY = top - 17 * mm
     valueY = top - 20.5 * mm
     colWidth = (mainWidth - 12 * mm) / 6
@@ -431,12 +418,10 @@ def drawTicketCard(c, originX, originY, width, height, booking, seatLabel, seatI
     for colIndex, (labelText, valueText) in enumerate(fields):
         field(colIndex, labelText, valueText)
 
-    # ---- Footer (booking + ticket reference) ----
     c.setFont("Helvetica", 6)
     c.setFillColor(colors.HexColor("#f4c2d3"))
     c.drawString(textX, top - 29.5 * mm, f"NO. {booking['bookingId'].upper()}{seatIndex:02d}")
 
-    # ---- Stub (seat number side) — barcode lives here only ----
     stubX = originX + mainWidth
     stubCenter = stubX + stubWidth / 2
 
