@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Choose your seats - {{ movieTitle }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+    <div class="pageShell">
+      <header class="heroSection seatsHero">
+        <div>
+          <p class="eyebrow">Step 2</p>
+          <h1>Pick your seats</h1>
+          <p class="heroText">{{ movieTitle }} &middot; Room {{ roomNumber }} &middot; {{ showTime }} &middot; PKR {{ price }} / seat</p>
+        </div>
+        <a class="backLink" href="{{ url_for('indexPage') }}">&larr; Back to movies</a>
+      </header>
+
+      {% if error %}
+      <div class="errorBox">
+        <p>{{ error }}</p>
+      </div>
+      {% endif %}
+
+      <section class="seatSection">
+        <div class="screenBar">SCREEN</div>
+
+        <div class="seatGrid">
+          {% for row in seatGrid %}
+          <div class="seatRow">
+            <span class="rowLabel">{{ row.rowLetter }}</span>
+            <div class="seatRowSeats">
+              {% for seat in row.seats %}
+              <button
+                type="button"
+                class="seatButton {{ 'seatBooked' if seat.booked else 'seatAvailable' }}"
+                data-seat-number="{{ seat.number }}"
+                data-seat-label="{{ seat.label }}"
+                {% if seat.booked %}disabled{% endif %}
+                {% if loop.index == 5 %}style="margin-right:18px;"{% endif %}
+              >{{ seat.label }}</button>
+              {% endfor %}
+            </div>
+            <span class="rowLabel">{{ row.rowLetter }}</span>
+          </div>
+          {% endfor %}
+        </div>
+
+        <div class="seatLegend">
+          <span><i class="legendSwatch legendAvailable"></i> Available</span>
+          <span><i class="legendSwatch legendSelected"></i> Selected</span>
+          <span><i class="legendSwatch legendBooked"></i> Booked</span>
+        </div>
+      </section>
+
+      <section class="bookingSection">
+        <div class="sectionTitleRow">
+          <div>
+            <p class="eyebrow">Step 3</p>
+            <h2>Confirm your booking</h2>
+          </div>
+        </div>
+        <form action="{{ url_for('bookTicketPage') }}" method="post" class="bookingForm" id="bookingForm">
+          <input type="hidden" name="personName" value="{{ personName }}">
+          <input type="hidden" name="selectedMovieTitle" value="{{ movieTitle }}">
+          <input type="hidden" name="selectedShowTime" value="{{ showTime }}">
+          <input type="hidden" name="ticketCount" value="{{ ticketCount }}">
+          <input type="hidden" name="seatNumbers" id="seatNumbers" value="">
+          <div class="summaryBox">
+            <p class="summaryLabel">Booking for {{ personName }}</p>
+            <h3 id="seatSummary">Select {{ ticketCount }} seat(s)</h3>
+            <p id="totalPrice"></p>
+          </div>
+          <button class="submitButton" type="submit" id="confirmButton" disabled>Confirm &amp; generate ticket PDF</button>
+        </form>
+      </section>
+    </div>
+
+    <script>
+      const ticketCount = Number("{{ ticketCount }}");
+      const pricePerSeat = Number("{{ price }}");
+      const seatButtons = document.querySelectorAll('.seatButton');
+      const seatSummary = document.getElementById('seatSummary');
+      const totalPrice = document.getElementById('totalPrice');
+      const confirmButton = document.getElementById('confirmButton');
+      const seatNumbersInput = document.getElementById('seatNumbers');
+      const bookingForm = document.getElementById('bookingForm');
+
+      let selectedSeats = [];
+
+      function setSeatState(button, isSelected) {
+        button.classList.toggle('seatSelected', isSelected);
+        button.classList.toggle('seatAvailable', !isSelected);
+      }
+
+      function refreshSummary() {
+        if (selectedSeats.length === 0) {
+          seatSummary.textContent = `Select ${ticketCount} seat(s)`;
+        } else {
+          const labels = selectedSeats.map((seat) => seat.label).join(', ');
+          seatSummary.textContent = labels;
+        }
+        totalPrice.textContent = selectedSeats.length
+          ? `Total: PKR ${selectedSeats.length * pricePerSeat}`
+          : '';
+        confirmButton.disabled = selectedSeats.length !== ticketCount;
+      }
+
+      seatButtons.forEach((button) => {
+        if (button.disabled) return;
+        button.addEventListener('click', () => {
+          const seatNumber = button.getAttribute('data-seat-number');
+          const seatLabel = button.getAttribute('data-seat-label');
+          const alreadySelectedIndex = selectedSeats.findIndex((seat) => seat.number === seatNumber);
+
+          if (alreadySelectedIndex !== -1) {
+            selectedSeats.splice(alreadySelectedIndex, 1);
+            setSeatState(button, false);
+          } else {
+            if (selectedSeats.length >= ticketCount) {
+              return;
+            }
+            selectedSeats.push({ number: seatNumber, label: seatLabel });
+            setSeatState(button, true);
+          }
+          refreshSummary();
+        });
+      });
+
+      bookingForm.addEventListener('submit', (event) => {
+        if (selectedSeats.length !== ticketCount) {
+          event.preventDefault();
+          return;
+        }
+        seatNumbersInput.value = selectedSeats.map((seat) => seat.number).join(',');
+      });
+
+      refreshSummary();
+    </script>
+  </body>
+</html>

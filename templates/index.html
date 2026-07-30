@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cinema Ticket Booking System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+    <div class="pageShell">
+      <header class="heroSection">
+        <div>
+          <p class="eyebrow">Cinema Ticket Booking System <span style="color:#002641; font-size:7.89px; margin-bottom: 10px;">-BY ALI ABEER</span></p>
+          <h1>Reserve your next movie experience</h1>
+          <p class="heroText">Choose a film, select a showtime, pick your seats on the map, and receive a polished ticket PDF for your booking.</p>
+        </div>
+      </header>
+
+      {% if status == 'success' %}
+      <div class="successBox">
+        <h2>Booking completed</h2>
+        <p>Your ticket PDF is ready. Download it using the link below.</p>
+        <a href="{{ url_for('downloadTicketPage', bookingId=bookingId) }}">Download ticket PDF</a>
+      </div>
+      {% endif %}
+
+      {% if error %}
+      <div class="errorBox">
+        <p>{{ error }}</p>
+      </div>
+      {% endif %}
+
+      <section class="movieSection">
+        <div class="sectionTitleRow">
+          <div>
+            <p class="eyebrow">Now showing</p>
+            <h2>Browse movies</h2>
+          </div>
+        </div>
+        <div class="movieScrollWindow">
+          {% for movie in movies %}
+          <article class="movieCard">
+            <div class="movieCardTop">
+              <div>
+                <h3>{{ movie.title }}</h3>
+                <p class="movieDescription">{{ movie.description }}</p>
+              </div>
+              <div class="roomBadge">Room {{ movie.roomNumber }}</div>
+            </div>
+            <div class="statusRow">
+              <span class="statusPill">Available {{ movie.availableSeats }}</span>
+              <span class="statusPill muted">Booked {{ movie.bookedSeats }}</span>
+            </div>
+            <div class="slotList">
+              {% for slot in movie.slots %}
+              <button class="timeButton" type="button" data-movie-title="{{ movie.title }}" data-show-time="{{ slot.showTime }}" data-price="{{ slot.price }}" data-room-number="{{ movie.roomNumber }}">
+                <span>{{ slot.showTime }}</span>
+                <strong>PKR {{ slot.price }}</strong>
+              </button>
+              {% endfor %}
+            </div>
+          </article>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="bookingSection">
+        <div class="sectionTitleRow">
+          <div>
+            <p class="eyebrow">Step 1</p>
+            <h2>Enter your details</h2>
+          </div>
+        </div>
+        <form action="{{ url_for('seatsPage') }}" method="get" class="bookingForm">
+          <input type="hidden" name="movieTitle" id="selectedMovieTitle" value="">
+          <input type="hidden" name="showTime" id="selectedShowTime" value="">
+          <div class="formGroup">
+            <label for="personName">Person name</label>
+            <input id="personName" name="personName" type="text" placeholder="Enter your name" required>
+          </div>
+          <div class="formGroup">
+            <label for="ticketCount">How many tickets</label>
+            <input id="ticketCount" name="ticketCount" type="number" min="1" max="10" value="1" required>
+          </div>
+          <div class="summaryBox">
+            <p class="summaryLabel">Selected show</p>
+            <h3 id="selectedSummary">Choose a time slot above</h3>
+            <p id="priceSummary">Price will appear here</p>
+          </div>
+          <button class="submitButton" type="submit" id="chooseSeatsButton" disabled>Choose seats</button>
+        </form>
+      </section>
+    </div>
+
+    <script>
+      const timeButtons = document.querySelectorAll('.timeButton');
+      const selectedMovieTitle = document.getElementById('selectedMovieTitle');
+      const selectedShowTime = document.getElementById('selectedShowTime');
+      const selectedSummary = document.getElementById('selectedSummary');
+      const priceSummary = document.getElementById('priceSummary');
+      const chooseSeatsButton = document.getElementById('chooseSeatsButton');
+      const ticketCountInput = document.getElementById('ticketCount');
+
+      function refreshPriceSummary() {
+        const price = Number(document.querySelector('.timeButton.active')?.getAttribute('data-price') || 0);
+        const count = Number(ticketCountInput.value || 1);
+        priceSummary.textContent = `Price: PKR ${price * count}`;
+      }
+
+      timeButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          timeButtons.forEach((item) => item.classList.remove('active'));
+          button.classList.add('active');
+          const movieTitle = button.getAttribute('data-movie-title');
+          const showTimeValue = button.getAttribute('data-show-time');
+          selectedMovieTitle.value = movieTitle;
+          selectedShowTime.value = showTimeValue;
+          selectedSummary.textContent = `${movieTitle} at ${showTimeValue}`;
+          chooseSeatsButton.disabled = false;
+          refreshPriceSummary();
+        });
+      });
+
+      ticketCountInput.addEventListener('input', refreshPriceSummary);
+    </script>
+  </body>
+</html>
