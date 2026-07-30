@@ -1,2 +1,7 @@
 [tool.vercel]
 entrypoint = "CinemaManagementSystem:app"
+
+[project]
+dependencies = [
+    "gunicorn",
+]
