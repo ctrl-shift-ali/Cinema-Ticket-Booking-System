@@ -22,6 +22,11 @@ body {
   color: var(--text);
 }
 
+.myCaption {
+  color:#002641; 
+  font-size:7.89px; 
+}
+
 .pageShell {
   max-width: 1200px;
   margin: 0 auto;
@@ -57,6 +62,7 @@ h1 {
   color: rgba(255, 255, 255, 0.9);
   max-width: 600px;
   line-height: 1.6;
+  font-size: small;
 }
 
 .successBox {
@@ -98,7 +104,7 @@ h1 {
 }
 
 .movieCard {
-  min-width: 280px;
+  min-width: 290px;
   background: var(--panelStrong);
   border: 1px solid var(--border);
   border-radius: 20px;
@@ -125,7 +131,7 @@ h1 {
 }
 
 .movieCardTop h3 {
-  margin: 0 0 10px;
+  margin: 0 -5px 10px;
   font-size: 1.05rem;
   line-height: 1.2;
 }
@@ -135,7 +141,7 @@ h1 {
   font-size: 14px;
   line-height: 1.4;
   margin:15px 0px 15px -5px;
-  width: 100%;
+  width: 97%;
 
 }
 
@@ -146,10 +152,11 @@ h1 {
   align-self: flex-start;
   background: rgba(139, 92, 246, 0.2);
   color: #ddd6fe;
-  padding: 8px 14px;
+  padding: 8px 12px;
   border-radius: 999px;
   font-size: 0.82rem;
   font-weight: 700;
+  margin-left: -5px;
   white-space: nowrap;
   min-width: 104px;
   text-align: center;
@@ -159,7 +166,8 @@ h1 {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  margin-left: 8px;
+  margin-top: 5px;
+  margin-left: 1px;
 }
 
 .statusPill {
@@ -178,10 +186,9 @@ h1 {
 .slotList {
   display: flex;
   flex-wrap: wrap;
-  column-gap: 30px;
-  row-gap: 20px;
-  margin-top: 10px;
-  margin-left: 8px;
+  gap: 20px;
+  margin-top: 15px;
+  margin-left: 15px;
 }
 
 .timeButton {
@@ -449,7 +456,7 @@ input {
   }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 700px),(pointer: coarse){
   .pageShell {
     padding: 16px;
   }
@@ -465,7 +472,7 @@ input {
     text-align: center;
   }
   .movieCard {
-    min-width: 240px;
+    min-width: 300px;
   }
   .sectionTitleRow {
     flex-wrap: wrap;
@@ -505,6 +512,11 @@ input {
   .movieCard {
     scroll-snap-align: start;
   }
+  .timeButton {
+    min-width: 90px;
+    padding: 8px 10px;
+    margin-left: 10px;
+  }
 }
 @media (max-width: 420px) {
   .pageShell {
@@ -513,6 +525,13 @@ input {
   h1 {
     font-size: 1.4rem;
   }
+  .myCaption {
+    color:#002641; 
+    font-size:7.89px; 
+    margin-left: -0.1em;
+    margin-bottom: 10px;
+    display:block;
+}
   .eyebrow {
     letter-spacing: 0.24em;
   }
@@ -537,12 +556,13 @@ input {
     gap: 3px;
   }
   .movieCard {
-    min-width: 210px;
-    padding: 14px;
+    min-width: 240px;
+    padding: 10px;
   }
   .timeButton {
     min-width: 84px;
     padding: 8px 10px;
+    margin-left: -2px;
   }
   .summaryBox {
     padding: 12px;
