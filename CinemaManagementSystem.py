@@ -72,7 +72,7 @@ movieOptions = [
     },
     {
         "title": "Insidious: Out Of The Further",
-        "description": "Horror - Malevolent Entities from The Further in thw real world.",
+        "description": "Horror - Malevolent Entities from the Further make their way to the Real World.",
         "roomNumber": 4,
         "slots": [
             {"showTime": "16:00", "price": 1100},
@@ -93,8 +93,8 @@ movieOptions = [
         ],
     },
     {
-        "title": "Catch Me If You Can",
-        "description": "Action - Thriller.",
+        "title": "The Odyssey",
+        "description": "The Odyssey is an ancient Greek poem, describes the Greek hero Odysseus on his dangerous journey to Ithaca after the Trojan War",
         "roomNumber": 6,
         "slots": [
            {"showTime": "14:00", "price": 1100},
@@ -485,4 +485,4 @@ def createTicketPdfFile(booking, seatNumbers):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000)
