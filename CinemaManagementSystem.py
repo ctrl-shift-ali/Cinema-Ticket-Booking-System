@@ -136,9 +136,8 @@ def findSlot(movie, showTime):
 
 def getPermanentBookedSeats(roomNumber):
     rnd = random.Random(f"room-{roomNumber}")
-    alreadyBookedSeats = rnd.randint(3,11)
+    alreadyBookedSeats = rnd.randint(3,15)
     return set(rnd.sample(range(1, roomCapacity + 1), alreadyBookedSeats))
-
 
 def getBookedSeatsForRoom(roomNumber, bookings):
     bookedSeats = set(getPermanentBookedSeats(roomNumber))
