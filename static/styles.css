@@ -26,6 +26,7 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 24px;
+  width: 100%;
 }
 
 .heroSection {
@@ -48,7 +49,7 @@ h1, h2, h3, p {
 }
 
 h1 {
-  font-size: 2.2rem;
+  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.2rem);
   margin-bottom: 8px;
 }
 
@@ -299,8 +300,9 @@ input {
 }
 
 .seatButton {
-  width: 30px;
-  height: 30px;
+  width: var(--seatSize, 30px);
+  height: var(--seatSize, 30px);
+  flex: 0 0 var(--seatSize, 30px);
   border-radius: 6px 6px 10px 10px;
   border: none;
   font-size: 0.62rem;
@@ -370,16 +372,150 @@ input {
   background: #dc2626;
 }
 
+@media (min-width: 1400px) {
+  .pageShell {
+    max-width: 1440px;
+    padding: 40px;
+  }
+  .heroSection, .movieSection, .bookingSection, .seatSection {
+    padding: 40px;
+  }
+  :root {
+    --seatSize: 38px;
+  }
+  .seatRow {
+    gap: 14px;
+  }
+  .seatRowSeats {
+    gap: 8px;
+  }
+  .seatButton {
+    font-size: 0.72rem;
+  }
+  .screenBar {
+    max-width: 860px;
+    height: 40px;
+    font-size: 0.85rem;
+  }
+  .movieCard {
+    min-width: 320px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .pageShell {
+    padding: 20px;
+  }
+  .heroSection, .movieSection, .bookingSection, .seatSection {
+    padding: 22px;
+  }
+  :root {
+    --seatSize: 28px;
+  }
+  .movieCard {
+    min-width: 260px;
+  }
+}
+
 @media (max-width: 700px) {
   .pageShell {
     padding: 16px;
   }
-
-  .heroSection, .movieSection, .bookingSection {
+  .heroSection, .movieSection, .bookingSection, .seatSection {
     padding: 18px;
+    border-radius: 18px;
   }
-
+  .seatsHero {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .backLink {
+    text-align: center;
+  }
   .movieCard {
     min-width: 240px;
+  }
+  .sectionTitleRow {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  :root {
+    --seatSize: 24px;
+  }
+  .seatRow {
+    gap: 6px;
+  }
+  .seatRowSeats {
+    gap: 4px;
+  }
+  .rowLabel {
+    width: 14px;
+    font-size: 0.68rem;
+  }
+  .seatButton {
+    font-size: 0.56rem;
+    border-radius: 4px 4px 7px 7px;
+  }
+  .screenBar {
+    max-width: 92%;
+    height: 26px;
+    font-size: 0.62rem;
+    letter-spacing: 0.28em;
+    margin-bottom: 22px;
+  }
+  .seatLegend {
+    gap: 14px;
+    font-size: 0.78rem;
+  }
+  .movieScrollWindow {
+    scroll-snap-type: x mandatory;
+  }
+  .movieCard {
+    scroll-snap-align: start;
+  }
+}
+@media (max-width: 420px) {
+  .pageShell {
+    padding: 12px;
+  }
+  h1 {
+    font-size: 1.4rem;
+  }
+  .eyebrow {
+    letter-spacing: 0.24em;
+  }
+  .heroSection, .movieSection, .bookingSection, .seatSection {
+    padding: 14px;
+    border-radius: 16px;
+  }
+  :root {
+    --seatSize: 20px;
+  }
+  .rowLabel {
+    width: 12px;
+    font-size: 0.62rem;
+  }
+  .seatButton {
+    font-size: 0.5rem;
+  }
+  .seatRow {
+    gap: 4px;
+  }
+  .seatRowSeats {
+    gap: 3px;
+  }
+  .movieCard {
+    min-width: 210px;
+    padding: 14px;
+  }
+  .timeButton {
+    min-width: 84px;
+    padding: 8px 10px;
+  }
+  .summaryBox {
+    padding: 12px;
+  }
+  .submitButton {
+    width: 100%;
   }
 }
