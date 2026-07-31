@@ -1,5 +1,6 @@
 # Cinema Ticket Booking System
-
+## [Cinema Management System](https://cinema-ticket-managing-system.vercel.app ) 
+### website made by me...
 This project is a small Flask-based web application for booking cinema tickets online. It lets users browse available movies, choose a showtime, select seats, and generate a PDF ticket for their booking.
 
 ## Project Overview
@@ -135,7 +136,6 @@ Go to:
 ```text
 http://127.0.0.1:5000
 ```
-Or use the [Cinema Management System](https://cinema-ticket-managing-system.vercel.app ) website made by me...
 
 ### Dependencies
 

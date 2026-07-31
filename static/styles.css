@@ -98,7 +98,7 @@ h1 {
 }
 
 .movieCard {
-  min-width: 280px;
+  min-width: 300px;
   background: var(--panelStrong);
   border: 1px solid var(--border);
   border-radius: 20px;
@@ -109,24 +109,46 @@ h1 {
 }
 
 .movieCardTop {
-  display: flex;
+  display: block;
   justify-content: space-between;
+  position:relative;
+  width: 100%;
   gap: 12px;
+}
+
+.movieCardTop > div:first-child {
+ display: block;
+ width: 100%;
+}
+
+.movieCardTop h3 {
+  margin: 0 0 10px;
+  font-size: 1.05rem;
+  line-height: 1.2;
 }
 
 .movieDescription {
   color: #a3b7ca;
-  font-size: 15px;
-  line-height: 1.5;
+  font-size: 14px;
+  line-height: 1.4;
+  margin:15px 0px 15px 0;
+  width: 100%;
 }
 
 .roomBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
   background: rgba(139, 92, 246, 0.2);
   color: #ddd6fe;
-  padding: 8px 10px;
+  padding: 8px 14px;
   border-radius: 999px;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
+  font-weight: 700;
   white-space: nowrap;
+  min-width: 104px;
+  text-align: center;
 }
 
 .statusRow {
