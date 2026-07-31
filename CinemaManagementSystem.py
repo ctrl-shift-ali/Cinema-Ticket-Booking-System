@@ -94,7 +94,7 @@ movieOptions = [
     },
     {
         "title": "The Odyssey",
-        "description": "The Odyssey is an ancient Greek poem, describes the Greek hero Odysseus on his dangerous journey to Ithaca after the Trojan War",
+        "description": "The Odyssey is an ancient Greek poem. It describes the Greek hero, Odysseus, on his dangerous journey to Ithaca after the Trojan War.",
         "roomNumber": 6,
         "slots": [
            {"showTime": "14:00", "price": 1100},
